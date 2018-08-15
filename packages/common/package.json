@@ -1,0 +1,28 @@
+{
+  "name": "common",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "license": "PRIVATE",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "typings": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf build",
+    "prebuild": "run-p clean",
+    "prestart": "run-p clean",
+    "start": "tsc --watch"
+  },
+  "author": "cdaringe",
+  "dependencies": {
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.3",
+    "@types/lodash": "^4.14.112",
+    "@types/node-fetch": "^2.1.2",
+    "@types/node": "^10.3.6",
+    "typescript": "^3.0.1"
+  }
+}
