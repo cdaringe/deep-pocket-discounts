@@ -3,6 +3,9 @@ import { setup, teardown, StackContext } from './fixture/stack'
 import * as request from 'supertest'
 import { Response } from 'superagent'
 
+const fuzzer = require('fuzzer')
+fuzzer.seed(1e6)
+
 const test = ava as TestInterface<StackContext>
 
 test.beforeEach(t => setup(t.context))
@@ -70,6 +73,51 @@ test('/api/search - live - keyword: backpack', async t => {
   } catch (err) {
     t.fail(err)
   }
+})
+
+test('/api/search - special chars, needing escape', async t => {
+  try {
+    await request(t.context.apiService.server)
+      .get('/api/search?keyword=Multi-Floor)') // mattress item match
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect((res: Response) => {
+        t.is(res.body && res.body[0], 39082884, 'search finds parenthesis')
+      })
+  } catch (err) {
+    t.fail(err)
+  }
+})
+
+test('/fuzzed/routes', async t => {
+  let i = 500
+  let route = '/api/fuzz/me'
+  while (i) {
+    route = fuzzer.mutate.string(route)
+    if (route[0] !== '/') route = `/${route}`
+    for (let method of ['get', 'post']) {
+      await request(t.context.apiService.server)
+        [method](route)
+        .expect((res: Response) => {
+          t.truthy(res.status < 500, 'fuzzed routes all 1xx/2xx/3xx/4xx')
+        })
+    }
+    --i
+  }
+  t.pass('all fuzzed inputs passed')
+})
+
+test('/api/search - fuzzed search', async t => {
+  let i = 500
+  let searchTerm = 'fuzz_me_search_term'
+  while (i) {
+    searchTerm = fuzzer.mutate.string(searchTerm)
+    await request(t.context.apiService.server)
+      .get(`/api/search?keyword=${searchTerm}`) // mattress item match
+      .expect(200)
+    --i
+  }
+  t.pass('all fuzzed inputs passed')
 })
 
 test('/, /client/side/route', async t => {
