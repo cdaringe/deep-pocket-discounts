@@ -56,10 +56,11 @@ export namespace Pocket {
   }
 
   export interface IReplicatorConfig {
+    enabled?: boolean
     ids: number[]
-    url: string
-    force: boolean
+    refresh: boolean
     resource: (id: number) => string
+    url: string
   }
 }
 

@@ -70,10 +70,11 @@ export class Service {
             process.env.DB_FILENAME || path.resolve(dataDirname, 'db.json')
         },
         replicator: {
+          enabled: !!process.env.ENABLE_REPLICATION,
           ids: itemIds,
-          force: !!process.env.FORCE_REPLICATION,
-          url,
-          resource
+          refresh: !!process.env.REFRESH_REPLICATION,
+          resource,
+          url
         }
       }
     }
@@ -146,7 +147,10 @@ export class Service {
     const { app } = await this.createRootApp(config, services, api, fileserver)
     Object.assign(this, { config, services })
     this.server = app.listen(port)
-    services.replicator!.replicate({ db: services.db! }) // kick-off replication side-effect
+    if (!config.services.replicator.enabled) {
+      // kick-off replication side-effect
+      services.replicator!.replicate({ db: services.db! })
+    }
     services.logger.debug(`configuration: ${JSON.stringify(config, null, 2)}`)
     services.logger.info(`🚀  listening @ http://localhost:${port}`)
   }

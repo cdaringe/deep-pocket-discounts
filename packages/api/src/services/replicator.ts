@@ -17,15 +17,15 @@ export interface IReplicate {
 export class Replicator {
   public ids: number[]
   public logger: Pocket.Logger
-  public force: boolean
+  public refresh: boolean
   public progress: { incomplete: number; complete: number }
   public state: States
   public url: string
   public resource: (id: number) => string
 
   constructor (opts: Pocket.IReplicatorConfig & { logger: Pocket.Logger }) {
-    const { force, ids, logger, resource, url } = opts
-    Object.assign(this, { force, ids, logger, resource, url })
+    const { refresh, ids, logger, resource, url } = opts
+    Object.assign(this, { refresh, ids, logger, resource, url })
     this.state = States.Stopped
     this.progress = { incomplete: this.ids.length, complete: 0 }
   }
@@ -60,7 +60,7 @@ export class Replicator {
   async replicateSingle (db: Pocket.IDb, id: number) {
     const existing = await db.readAsync(id.toString())
     if (existing !== undefined) {
-      if (this.force) {
+      if (this.refresh) {
         this.logger.info(`refreshing existing item id ${id}`)
       } else {
         this.logger.info(`item id ${id} already in database. skipping`)
