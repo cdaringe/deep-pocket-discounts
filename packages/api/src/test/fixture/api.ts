@@ -1,3 +1,4 @@
+import { defaultsDeep } from 'lodash'
 import { freeport } from './util/freeport'
 import { Pocket, Service } from '../../index'
 import { StackContext } from './stack'
@@ -8,10 +9,13 @@ export interface ApiContext {
   apiService: Service
 }
 
-export async function setup (ctx: Partial<StackContext>) {
+export async function setup (
+  ctx: Partial<StackContext>,
+  opts?: Partial<Pocket.IServiceConfig>
+) {
   const port = await freeport()
   const service = new Service()
-  const config: Partial<Pocket.IServiceConfig> = {
+  const config: Partial<Pocket.IServiceConfig> = defaultsDeep(opts || {}, {
     logger: {
       name: 'testlogger',
       level: 'silent',
@@ -20,7 +24,7 @@ export async function setup (ctx: Partial<StackContext>) {
     server: {
       port
     }
-  }
+  })
   await service.start(config)
   // wait for server to come up!
   await retry(rt =>

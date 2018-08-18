@@ -5,6 +5,7 @@ import { Replicator } from './services/replicator'
 export namespace Pocket {
   export interface IDb {
     deleteAsync: (key: string) => Promise<any>
+    filename: string
     flushAsync: () => Promise<any>
     readAsync: (key: string) => Promise<any>
     writeAsync: (key: string, value: any) => Promise<any>
@@ -13,7 +14,7 @@ export namespace Pocket {
   export type Logger = pino.Logger
 
   export type IServices = {
-    db?: any
+    db?: IDb
     logger: pino.Logger
     replicator?: Replicator
   }

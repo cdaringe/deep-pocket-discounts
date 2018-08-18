@@ -14,5 +14,6 @@ export async function service (
   await fs.mkdirp(path.dirname(dbFilename))
   const db = bluebird.promisifyAll(toilet(dbFilename))
   await db.openAsync()
+  db.filename = dbFilename
   return db
 }

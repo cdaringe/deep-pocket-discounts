@@ -140,7 +140,7 @@ export class Service {
     const { app } = await this.createRootApp(config, services, api, fileserver)
     Object.assign(this, { config, services })
     this.server = app.listen(port)
-    services.replicator!.replicate({ db: services.db }) // kick-off replication side-effect
+    services.replicator!.replicate({ db: services.db! }) // kick-off replication side-effect
     services.logger.debug(`configuration: ${JSON.stringify(config, null, 2)}`)
     services.logger.info(`🚀  listening @ http://localhost:${port}`)
   }
