@@ -40,7 +40,10 @@ export class Service {
         ].join(' ')
       )
     }
-    const apiKey = process.env.ITEM_API_KEY || 'kjybrqfdgp3u4yv2qzcnjndj' // no, we wouldn't do this in prod ;)
+    if (!process.env.PRODUCT_API_URL) {
+      throw new Error('PRODUCT_API_URL not specified')
+    }
+    if (!process.env.ITEM_API_KEY) throw new Error('ITEM_API_KEY not specified')
     const dataDirname =
       process.env.DATA_DIRNAME || path.resolve(homedir(), '.deep-pockets')
     const defaults: Partial<Pocket.IServiceConfig> = {
@@ -62,8 +65,9 @@ export class Service {
         replicator: {
           ids: replicateIds,
           force: !!process.env.FORCE_REPLICATION,
-          url: process.env.PRODUCT_API_URL!,
-          resource: (id: number) => `/items/${id}?format=json&apiKey=${apiKey}`
+          url: process.env.PRODUCT_API_URL,
+          resource: (id: number) =>
+            `/items/${id}?format=json&apiKey=${process.env.ITEM_API_KEY}`
         }
       }
     }
