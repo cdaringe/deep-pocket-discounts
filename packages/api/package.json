@@ -74,6 +74,6 @@
     "server:start": "nodemon node build/bin.js",
     "start": "run-p compiler:watch server:start",
     "pretest": "echo $PWD && ls -al build",
-    "test": "ava build/test/**/*.test.js"
+    "test": "NODE_ENV=development ava build/test/**/*.test.js"
   }
 }

@@ -2,7 +2,7 @@
 
 a product keyword search suite.
 
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![CircleCI](https://circleci.com/gh/cdaringe/deep-pocket-discounts.svg?style=svg)](https://circleci.com/gh/cdaringe/deep-pocket-discounts)
 
 to learn more about the design of this project, see [design-discussion.md](./design-discussion.md).
 
