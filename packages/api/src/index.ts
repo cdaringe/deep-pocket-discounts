@@ -99,7 +99,12 @@ export class Service {
     if (common.isDev) {
       const uiBuildDir = path.resolve(__dirname, '../../ui/build')
       const isUiBuilt = await fs.pathExists(PUBLIC_DIRNAME)
-      if (!isUiBuilt) await fs.symlink(uiBuildDir, PUBLIC_DIRNAME)
+      if (!isUiBuilt) {
+      try {
+        await fs.symlink(uiBuildDir, PUBLIC_DIRNAME)
+      } catch (err) {
+        if (err.code !== 'EEXIST') throw err
+      }
     }
     app.use((ctx: Koa.Context, next: any) =>
       staticHandler(ctx, async () => {
