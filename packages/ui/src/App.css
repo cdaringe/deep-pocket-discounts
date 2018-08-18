@@ -8,6 +8,33 @@
   max-width: 600px;
 }
 
+.deep-content__search-options {
+  background-color: rgba(178, 211, 234, 0.8);
+  border-radius: 10px;
+  bottom: 5px;
+  display: grid;
+  grid-template-areas: "header header" "a1 a2";
+  grid-template-columns: auto auto;
+  grid-template-rows: auto 1fr;
+  padding: 10px;
+  position: fixed;
+  right: 5px;
+  text-align: left;
+}
+
+#search_options_title {
+  font-weight: bold;
+  grid-area: header;
+}
+#live_mode_toggle_label {
+  font-size: small;
+  padding: 4px;
+  grid-area: a1;
+}
+#live_mode_toggle_control {
+  grid-area: a2;
+}
+
 .deep-header__logo {
   fill: white;
   stroke: white;

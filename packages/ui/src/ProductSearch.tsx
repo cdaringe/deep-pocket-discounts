@@ -4,11 +4,13 @@ import { ProductSearchResults } from './ProductSearchResults'
 import { Subject } from 'rxjs'
 import { debounceTime, tap, mergeMap, filter, map } from 'rxjs/operators'
 import { ajax } from 'rxjs/ajax'
+import { ProductSearchControls } from './ProductSearchControls'
 
 interface IProductSearch {
   search: {
     dirty: boolean
     text: string
+    liveMode: boolean
   }
   loading: boolean
   results: any[]
@@ -21,18 +23,22 @@ export class ProductSearch extends React.Component<any, IProductSearch> {
   constructor (props: any) {
     super(props)
     this.state = {
-      search: { dirty: false, text: '' },
+      search: { dirty: false, text: '', liveMode: false },
       loading: false,
       results: []
     }
     this.onSearchChange = this.onSearchChange.bind(this)
+    this.onToggleLiveMode = this.onToggleLiveMode.bind(this)
     this.searchTextChange$ = new Subject()
     this.searchTextChange$
       .pipe(
         tap((evt: InputEvent) => {
           const isEmittingAjax = !!evt.target!.value.trim()
           this.setState({
-            search: { dirty: true, text: evt.target!.value },
+            search: {
+              ...this.state.search,
+              ...{ dirty: true, text: evt.target!.value }
+            },
             results: [],
             loading: isEmittingAjax
           })
@@ -40,11 +46,18 @@ export class ProductSearch extends React.Component<any, IProductSearch> {
         map(evt => evt.target!.value.trim()),
         filter(keyword => !!keyword),
         debounceTime(500),
-        mergeMap(keyword =>
-          ajax(`/api/search?keyword=${keyword}&doc=1`).pipe(
+        mergeMap(keyword => {
+          const queryString = [
+            this.state.search.liveMode ? 'live=1' : null,
+            `keyword=${keyword}`,
+            'doc=1'
+          ]
+            .filter(i => i)
+            .join('&')
+          return ajax(`/api/search?${queryString}`).pipe(
             map(res => res.response)
           )
-        )
+        })
       )
       .subscribe({
         next: results => this.setState({ loading: false, results })
@@ -52,6 +65,14 @@ export class ProductSearch extends React.Component<any, IProductSearch> {
   }
   async onSearchChange (evt: InputEvent) {
     this.searchTextChange$.next(evt)
+  }
+  onToggleLiveMode () {
+    this.setState({
+      search: {
+        ...this.state.search,
+        liveMode: !this.state.search.liveMode
+      }
+    })
   }
   async componentWillMount () {}
   render () {
@@ -68,6 +89,10 @@ export class ProductSearch extends React.Component<any, IProductSearch> {
         />
         <ProductSearchResults
           {...{ default: !search.dirty, loading, items: results }}
+        />
+        <ProductSearchControls
+          checked={this.state.search.liveMode}
+          onLiveModeChange={this.onToggleLiveMode}
         />
       </div>
     )
