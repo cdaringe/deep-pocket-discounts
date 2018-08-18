@@ -14,7 +14,8 @@ export async function setup (ctx: Partial<StackContext>) {
   const config: Partial<Pocket.IServiceConfig> = {
     logger: {
       name: 'testlogger',
-      level: 'silent'
+      level: 'silent',
+      prettyPrint: true
     },
     server: {
       port
