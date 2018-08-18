@@ -7,10 +7,25 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/src/index.js",
+      "name": "file",
+      "program": "${file}",
       "outFiles": [
         "${workspaceFolder}/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "compile:all",
+      "program": "${workspaceFolder}/scripts/build.js",
+      "args": [
+        "compile:all"
+      ],
+      "skipFiles": [
+        "<node_internals>/**/*.js"
       ]
     }
   ]
