@@ -1,19 +1,16 @@
 # api
 
-## build
-
-- `yarn build`
-
 ## usage
 
+- `yarn build`
 - `yarn start`, or `node build/bin.js`
 
 ### routes
 
-| route         | method | query                          | response          | description                                                                                                  |
-| ------------- | ------ | ------------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------ |
-| `/api/search` | `GET`  | `keyword=<value>`, `live=true` | `[list, of, ids]` | Search for items based on a keyword.  `live` mode uses the configured API.  By default, searches API caches. |
-| `/api/hello`  | `GET`  | -                              | `'world'`         |                                                                                                              |
+| route         | method | query                                      | response                        | description                                                                                                                                                |
+| ------------- | ------ | ------------------------------------------ | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/api/search` | `GET`  | `keyword=<value>`, `live=true`, `doc=true` | `[list, of, ids]`, or documents | Search for items based on a keyword.  `live` mode uses the backing API for search.  By default, searches API caches. `doc` returns full docs, vs just IDs. |
+| `/api/hello`  | `GET`  | -                                          | `'world'`                       |                                                                                                                                                            |
 
 
 ## configuation
