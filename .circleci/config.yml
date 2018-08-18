@@ -18,5 +18,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn bootstrap
       - run: yarn build
+      # don't rely on <sym>links in container mode--just move the files to more
+      # closely mimic production
+      - run: rm -rf packages/api/static/public && mkdir -p packages/api/static && cp -r packages/ui/build packages/api/static/public
       - run: yarn test
 
