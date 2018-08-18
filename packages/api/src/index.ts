@@ -98,12 +98,13 @@ export class Service {
     // serve linked static ui build
     if (common.isDev) {
       const uiBuildDir = path.resolve(__dirname, '../../ui/build')
-      const isUiBuilt = await fs.pathExists(PUBLIC_DIRNAME)
-      if (!isUiBuilt) {
-      try {
-        await fs.symlink(uiBuildDir, PUBLIC_DIRNAME)
-      } catch (err) {
-        if (err.code !== 'EEXIST') throw err
+      const isUiBuilt = await fs.pathExists(uiBuildDir)
+      if (isUiBuilt) {
+        try {
+          await fs.symlink(uiBuildDir, PUBLIC_DIRNAME)
+        } catch (err) {
+          if (err.code !== 'EEXIST') throw err
+        }
       }
     }
     app.use((ctx: Koa.Context, next: any) =>
