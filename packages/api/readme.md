@@ -8,6 +8,13 @@
 
 - `yarn start`, or `node build/bin.js`
 
+### routes
+
+| route         | method | query                          | response          | description                                                                                                  |
+| ------------- | ------ | ------------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------ |
+| `/api/search` | `GET`  | `keyword=<value>`, `live=true` | `[list, of, ids]` | Search for items based on a keyword.  `live` mode uses the configured API.  By default, searches API caches. |
+| `/api/hello`  | `GET`       |                                | `'world'`         |                                                                                                              |
+
 
 ## configuation
 
