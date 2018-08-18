@@ -1,6 +1,6 @@
 class ApiError extends Error {
-  static status: number
-  static defaultMessage: string
+  static status: number // eslint-disable-line
+  static defaultMessage: string // eslint-disable-line
 }
 class Api400 extends ApiError {}
 Api400.status = 400

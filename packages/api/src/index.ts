@@ -9,7 +9,6 @@ import { init as initServices } from './services'
 import { Pocket } from './interfaces'
 import { promisify } from 'bluebird'
 import { PUBLIC_DIRNAME } from './constants'
-import { resolve } from 'path'
 import { Server } from 'http'
 import * as common from 'common'
 import * as fs from 'fs-extra'
@@ -90,7 +89,7 @@ export class Service {
     const staticHandler = serve(PUBLIC_DIRNAME, { defer: false })
     // serve linked static ui build
     if (common.isDev) {
-      const uiBuildDir = resolve(__dirname, '../../ui/build')
+      const uiBuildDir = path.resolve(__dirname, '../../ui/build')
       const isUiBuilt = await fs.pathExists(PUBLIC_DIRNAME)
       if (!isUiBuilt) await fs.symlink(uiBuildDir, PUBLIC_DIRNAME)
     }
