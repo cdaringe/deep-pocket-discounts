@@ -33,8 +33,8 @@ async function compileAll () {
   )
   // put pkgs in build order
   // [[arr, of, 1st to, build], [arr, of 2nd to build], ... [arr of nth, to build]]
-  let packageNames = zip(projectRootDirnames, pkgs)
-  let [common, rest] = partition(packageNames, ([d, pkg]) =>
+  let packageSets = zip(projectRootDirnames, pkgs)
+  let [common, rest] = partition(packageSets, ([d, pkg]) =>
     pkg.name.match(/common/i)
   )
   const toBuild = [common].concat([rest])
@@ -57,12 +57,10 @@ async function testAll () {
   const pkgs = await Promise.all(
     projectRootDirnames.map(root => readJson(resolve(root, 'package.json')))
   )
-  let packageNames = zip(projectRootDirnames, pkgs)
-  log(
-    `testing projects: ${packageNames.map(([d, pkg]) => pkg.name).join(', ')}`
-  )
+  let packageSets = zip(projectRootDirnames, pkgs)
+  log(`testing projects: ${packageSets.map(([d, pkg]) => pkg.name).join(', ')}`)
   await Promise.all(
-    packageNames
+    packageSets
       .filter(([dirname, pkg]) => pkg.scripts && pkg.scripts.test) // only build those w/ build scripts
       .map(([dirname, pkg]) =>
         execa('yarn', ['test'], { cwd: dirname, stdio: 'inherit' })
