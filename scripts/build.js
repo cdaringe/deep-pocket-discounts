@@ -52,6 +52,24 @@ async function compileAll () {
   }
 }
 
+async function testAll () {
+  const projectRootDirnames = await glob(`${PKGS_DIRNAME}/*`)
+  const pkgs = await Promise.all(
+    projectRootDirnames.map(root => readJson(resolve(root, 'package.json')))
+  )
+  let packageNames = zip(projectRootDirnames, pkgs)
+  log(
+    `testing projects: ${packageNames.map(([d, pkg]) => pkg.name).join(', ')}`
+  )
+  await Promise.all(
+    packageNames
+      .filter(([dirname, pkg]) => pkg.scripts && pkg.scripts.test) // only build those w/ build scripts
+      .map(([dirname, pkg]) =>
+        execa('yarn', ['test'], { cwd: dirname, stdio: 'inherit' })
+      )
+  )
+}
+
 const cli = meow(
   `
 Usage
@@ -61,6 +79,7 @@ Options
 
 Examples
   $ build compile:all # compile all subprojects, max parallelization!
+  $ build test:all # test all subprojects, max parallelization!
 `,
   {
     flags: {}
@@ -69,6 +88,7 @@ Examples
 async function go () {
   const cmd = cli.input[0]
   if (cmd === 'compile:all') compileAll()
+  else if (cmd === 'test:all') testAll()
   else {
     console.error(`unsupported cmd: ${cmd}`)
     process.exit(1)

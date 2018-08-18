@@ -36,7 +36,7 @@
     "format": "prettier-standard '**/src/**/*.ts'",
     "lint": "echo '@TODO: follow up on https://github.com/standard/standard/issues/1181'",
     "_lint": "standard '**/src/**/*.ts'",
-    "test": "CI=true lerna exec 'yarn test'"
+    "test": "CI=true node scripts/build.js test:all"
   },
   "lint-staged": {
     "linters": {
