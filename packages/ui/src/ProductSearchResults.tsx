@@ -19,7 +19,7 @@ export class ProductSearchResults extends React.PureComponent<
     if (loading) {
       body = <Loader size='massive' active content='Loading' />
     } else if (defaultView) {
-      body = <p>Eargerly awaiting your search</p>
+      body = <p>Eagerly awaiting your search 🔍</p>
     } else if (!items.length) {
       body = <p>No results found. :/</p>
     } else {

@@ -197,9 +197,11 @@ export function ProductSearchResultsCard (props: Pocket.Product) {
           </span>
         }
         description={
-          props.shortDescription.length < 200
-            ? props.shortDescription
-            : `${props.shortDescription.substr(0, 197).trim()}...`
+          <p style={{ height: 100 }}>
+            {props.shortDescription.length < 200
+              ? props.shortDescription
+              : `${props.shortDescription.substr(0, 197).trim()}...`}
+          </p>
         }
         extra={
           <p>
