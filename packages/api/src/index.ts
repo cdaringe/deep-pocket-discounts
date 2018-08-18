@@ -26,11 +26,9 @@ export class Service {
 
   createConfig (opts: Partial<Pocket.IServiceConfig>): Pocket.IServiceConfig {
     const name = process.env.SERVICE_NAME || common.constants.APP_NAME
-    let replicateIds
+    let itemIds
     try {
-      replicateIds = process.env.REPLICATE_IDS!
-        .split(',')
-        .map(i => parseInt(i, 10))
+      itemIds = process.env.REPLICATE_IDS!.split(',').map(i => parseInt(i, 10))
     } catch (err) {
       throw new Error(
         [
@@ -45,14 +43,24 @@ export class Service {
     if (!process.env.ITEM_API_KEY) throw new Error('ITEM_API_KEY not specified')
     const dataDirname =
       process.env.DATA_DIRNAME || path.resolve(homedir(), '.deep-pockets')
+    const url = process.env.PRODUCT_API_URL
+    const resource = (id: number) =>
+      `/items/${id}?format=json&apiKey=${process.env.ITEM_API_KEY}`
     const defaults: Partial<Pocket.IServiceConfig> = {
+      apis: {
+        items: {
+          url,
+          resource,
+          permittedIds: itemIds
+        }
+      },
       dataDirname,
-      name,
       logger: {
         level: process.env.LOG_LEVEL || common.isDev ? 'debug' : 'warn',
         name,
         prettyPrint: common.isDev ? true : !!process.env.PRETTY_REQUEST_LOGGING
       },
+      name,
       server: {
         port: process.env.PORT ? parseInt(process.env.PORT) : 9090
       },
@@ -62,11 +70,10 @@ export class Service {
             process.env.DB_FILENAME || path.resolve(dataDirname, 'db.json')
         },
         replicator: {
-          ids: replicateIds,
+          ids: itemIds,
           force: !!process.env.FORCE_REPLICATION,
-          url: process.env.PRODUCT_API_URL,
-          resource: (id: number) =>
-            `/items/${id}?format=json&apiKey=${process.env.ITEM_API_KEY}`
+          url,
+          resource
         }
       }
     }
@@ -80,7 +87,7 @@ export class Service {
     common.isDev && app.use(cors())
     app.context.services = services
     createApiMiddlewares(config).forEach(mw => app.use(mw))
-    await routes.bind(app, router, services)
+    await routes.bind(app, config, router, services)
     return { app, services }
   }
 

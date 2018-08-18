@@ -3,11 +3,19 @@ import * as pino from 'pino'
 import { Replicator } from './services/replicator'
 
 export namespace Pocket {
+  export interface IApisConfig {
+    // we only have one api endpoint, items!
+    items: {
+      url: string
+      resource: (id: number) => string
+      permittedIds: number[]
+    }
+  }
   export interface IDb {
     deleteAsync: (key: string) => Promise<any>
     filename: string
     flushAsync: () => Promise<any>
-    readAsync: (key: string) => Promise<any>
+    readAsync: (key?: string) => Promise<any>
     writeAsync: (key: string, value: any) => Promise<any>
   }
 
@@ -20,6 +28,7 @@ export namespace Pocket {
   }
 
   export interface IServiceConfig {
+    apis: IApisConfig
     dataDirname: string
     logger: {
       name: string

@@ -5,8 +5,8 @@ export async function middleware (ctx: Koa.BaseContext, next: any) {
   var res
   try {
     res = await next()
-    ctx.body = res
-    ctx.status = 200
+    ctx.body = ctx.body || res
+    ctx.status = ctx.status || 200
     return
   } catch (err) {
     if (err instanceof ApiError) {
