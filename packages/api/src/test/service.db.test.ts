@@ -8,13 +8,8 @@ const test = ava as TestInterface<StackContext>
 
 test.beforeEach(async t => {
   const filename = await promisify(tmp.tmpName.bind(tmp))()
-  await setup(t.context, {
-    services: {
-      db: {
-        filename
-      }
-    }
-  } as any)
+  const serviceOptions = { services: { db: { filename } } }
+  await setup(t.context, serviceOptions as any)
 })
 test.afterEach(t => teardown(t.context))
 
