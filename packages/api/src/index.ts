@@ -97,6 +97,7 @@ export class Service {
     const staticHandler = serve(PUBLIC_DIRNAME, { defer: false })
     // serve linked static ui build
     if (common.isDev) {
+      await fs.mkdirp(path.dirname(PUBLIC_DIRNAME))
       const uiBuildDir = path.resolve(__dirname, '../../ui/build')
       const isUiBuilt = await fs.pathExists(uiBuildDir)
       if (isUiBuilt) {
