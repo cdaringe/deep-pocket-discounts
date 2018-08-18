@@ -25,7 +25,8 @@
     "node-fetch": "^2.1.2",
     "perish": "^1.0.1",
     "promise-retry": "^1.1.1",
-    "pino": "^4.10.4"
+    "pino": "^4.10.4",
+    "toiletdb": "^1.4.1"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.23",

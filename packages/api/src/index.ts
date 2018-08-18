@@ -4,6 +4,7 @@ import {
 } from './middleware'
 import * as routes from './routes'
 import { defaultsDeep } from 'lodash'
+import { homedir } from 'os'
 import { init as initServices } from './services'
 import { Pocket } from './interfaces'
 import { promisify } from 'bluebird'
@@ -14,6 +15,7 @@ import * as common from 'common'
 import * as fs from 'fs-extra'
 import * as Koa from 'koa'
 import * as mount from 'koa-mount'
+import * as path from 'path'
 import * as Router from 'koa-router'
 import serve = require('koa-static')
 var cors = require('@koa/cors')
@@ -23,11 +25,26 @@ export class Service {
   public services: Pocket.IServices
   public server: Server
 
-  async createConfig (
-    opts: Partial<Pocket.IServiceConfig>
-  ): Promise<Pocket.IServiceConfig> {
+  createConfig (opts: Partial<Pocket.IServiceConfig>): Pocket.IServiceConfig {
     const name = process.env.SERVICE_NAME || common.constants.APP_NAME
-    return defaultsDeep(opts, {
+    let replicateIds
+    try {
+      replicateIds = process.env.REPLICATE_IDS!
+        .split(',')
+        .map(i => parseInt(i, 10))
+    } catch (err) {
+      throw new Error(
+        [
+          `REPLICATE_IDS must be csv,of,product,IDs (e.g. 1,2,3).`,
+          `found: ${process.env.REPLICATE_IDS}`
+        ].join(' ')
+      )
+    }
+    const apiKey = process.env.ITEM_API_KEY || 'kjybrqfdgp3u4yv2qzcnjndj' // no, we wouldn't do this in prod ;)
+    const dataDirname =
+      process.env.DATA_DIRNAME || path.resolve(homedir(), '.deep-pockets')
+    const defaults: Partial<Pocket.IServiceConfig> = {
+      dataDirname,
       name,
       logger: {
         level: process.env.LOG_LEVEL || common.isDev ? 'debug' : 'warn',
@@ -38,14 +55,19 @@ export class Service {
         port: process.env.PORT ? parseInt(process.env.PORT) : 9090
       },
       services: {
-        salesforce: {
-          password: process.env.SALESFORCE_PASSWORD,
-          token: process.env.SALESFORCE_TOKEN,
-          url: process.env.SALESFORCE_URL,
-          username: process.env.SALESFORCE_LOGIN
+        db: {
+          filename:
+            process.env.DB_FILENAME || path.resolve(dataDirname, 'db.json')
+        },
+        replicator: {
+          ids: replicateIds,
+          force: !!process.env.FORCE_REPLICATION,
+          url: process.env.PRODUCT_API_URL!,
+          resource: (id: number) => `/items/${id}?format=json&apiKey=${apiKey}`
         }
       }
-    })
+    }
+    return defaultsDeep(opts, defaults)
   }
 
   async createApiServerApp (config: Pocket.IServiceConfig) {
@@ -95,14 +117,26 @@ export class Service {
     return { app }
   }
 
+  /**
+   * `start` kicks off most of the heavy lifting of the app.
+   * The server hosts multiple sub apps:
+   * - a fileserver, for serving the ui assets, &
+   * - the api
+   * Some may find the name `api` offensive given that the service also serves
+   * static ui content.  This is a fair opinion.  Given the tiny role of serving
+   * a few static files, I choose to include this functionality over rolling an
+   * indepentent fileserver, such as nginx/httpd/etc, as a side car to this app.
+   */
   async start (opts: Partial<Pocket.IServiceConfig>) {
-    const config = await this.createConfig(opts)
+    const config = this.createConfig(opts)
+    await fs.mkdirp(config.dataDirname)
     const { server: { port } } = config
     const { app: fileserver } = await this.createFileServerApp()
     const { app: api, services } = await this.createApiServerApp(config)
     const { app } = await this.createRootApp(config, services, api, fileserver)
     Object.assign(this, { config, services })
     this.server = app.listen(port)
+    services.replicator!.replicate({ db: services.db }) // kick-off replication side-effect
     services.logger.debug(`configuration: ${JSON.stringify(config, null, 2)}`)
     services.logger.info(`🚀  listening @ http://localhost:${port}`)
   }
