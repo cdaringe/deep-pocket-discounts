@@ -23,15 +23,15 @@ this project uses [lerna](https://www.npmjs.com/package/lerna) to link the depen
 
 ### configuration
 
-- in `packages/api`, there is a `.env.example` file.  you will want to create a `.env.<development|production>` file contingent on the environment you target.
+- in `packages/api`, there is a `.env.example` file.  you will want to create a `.env.<development|production>` file contingent on the environment you target.  a default `development` version has been provided for convenience.
 
 ## run
 
 - `yarn start` to start the ui & api
 
-edit freely.
+edit source freely and observe changes.
 
-alterantively, run `yarn start` in each desired project.  see each package for individual package instructions.
+alternatively, run `yarn start` in each desired project.  see each package for individual package instructions.
 
 ## develop
 
@@ -48,6 +48,5 @@ see individual packages, specifically for `package.json :: scripts.test`
 
 ## lint
 
-- standard
-
-all code is autoformatted using `prettier-standard` for an opinionated, rigid style
+- `yarn lint` - lints with [standard](https://standardjs.com/)
+- all code is autoformatted using `prettier-standard` for an opinionated, rigid style
