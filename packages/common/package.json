@@ -12,7 +12,8 @@
     "clean": "rm -rf build",
     "prebuild": "run-p clean",
     "prestart": "run-p clean",
-    "start": "tsc --watch"
+    "start": "tsc --watch",
+    "test": "echo test:common:noop"
   },
   "author": "cdaringe",
   "dependencies": {
