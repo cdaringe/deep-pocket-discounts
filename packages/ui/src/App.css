@@ -1,28 +1,32 @@
-.App {
+.deep-content {
+  padding: 1rem;
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.deep-content__search {
+  margin: auto;
+  max-width: 600px;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+.deep-header__logo {
+  fill: white;
+  stroke: white;
+  transform: rotate(14deg);
+  transition: all 700ms;
+  width: 70px;
+}
+.deep-header__logo:hover {
+  transform: rotate(-15deg);
+}
+
+.deep-header {
+  background-color: #0879c9;
   color: white;
+  height: 200px;
+  padding: 20px;
+  text-align: center;
 }
 
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
+.deep-header__title {
   font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }

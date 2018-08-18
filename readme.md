@@ -13,8 +13,7 @@ see [contributing.md](./.github/contributing.md)
 
 ## @TODO
 
-- ci, run all tests
-- add ci badge
-- lint, run in each repo from root on commit
+- add readme to common
+- add ui to use api search
 - write about commitlint
 - write replicator, db tests

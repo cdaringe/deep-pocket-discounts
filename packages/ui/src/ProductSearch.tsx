@@ -1,0 +1,75 @@
+import * as React from 'react'
+import { Input } from 'semantic-ui-react'
+import { ProductSearchResults } from './ProductSearchResults'
+import { Subject } from 'rxjs'
+import { debounceTime, tap, mergeMap, filter, map } from 'rxjs/operators'
+import { ajax } from 'rxjs/ajax'
+
+interface IProductSearch {
+  search: {
+    dirty: boolean
+    text: string
+  }
+  loading: boolean
+  results: any[]
+}
+
+type InputEvent = React.ChangeEvent<HTMLInputElement>
+
+export class ProductSearch extends React.Component<any, IProductSearch> {
+  private searchTextChange$: Subject<InputEvent>
+  constructor (props: any) {
+    super(props)
+    this.state = {
+      search: { dirty: false, text: '' },
+      loading: false,
+      results: []
+    }
+    this.onSearchChange = this.onSearchChange.bind(this)
+    this.searchTextChange$ = new Subject()
+    this.searchTextChange$
+      .pipe(
+        tap((evt: InputEvent) => {
+          const isEmittingAjax = !!evt.target!.value.trim()
+          this.setState({
+            search: { dirty: true, text: evt.target!.value },
+            results: [],
+            loading: isEmittingAjax
+          })
+        }),
+        map(evt => evt.target!.value.trim()),
+        filter(keyword => !!keyword),
+        debounceTime(500),
+        mergeMap(keyword =>
+          ajax(`/api/search?keyword=${keyword}&doc=1`).pipe(
+            map(res => res.response)
+          )
+        )
+      )
+      .subscribe({
+        next: results => this.setState({ loading: false, results })
+      })
+  }
+  async onSearchChange (evt: InputEvent) {
+    this.searchTextChange$.next(evt)
+  }
+  async componentWillMount () {}
+  render () {
+    const { loading, results, search } = this.state
+    return (
+      <div className='deep-content'>
+        <Input
+          className='deep-content__search'
+          onChange={this.onSearchChange}
+          size='big'
+          icon='search'
+          placeholder='Search...'
+          fluid
+        />
+        <ProductSearchResults
+          {...{ default: !search.dirty, loading, items: results }}
+        />
+      </div>
+    )
+  }
+}
