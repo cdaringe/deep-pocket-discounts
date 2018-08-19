@@ -13,7 +13,7 @@ to learn more about the design of this project, see [design-discussion.md](./des
 you can use `deep-pocket-discounts` in three ways:
 
 1. visit [pocket.cdaringe.com](https://pocket.cdaringe.com)
-2. run a docker container, `docker run -it --env-file packages/api/.env.development -p 9090:9090 cdaringe/dpd`, or,
+2. run a docker container, `docker run --init -it --env-file packages/api/.env.development -p 9090:9090 cdaringe/dpd`, or,
 3. see the contributing docs for how to run locally.
 
 ## contributing
