@@ -112,6 +112,11 @@ performed is not strictly defined, i provide _two_ implementations:
 supporting cached mode was a simply a fun exercise to demonstrate a (non-ideal) mechanism
 as to how one may serve queries faster.
 
+in docker and/or production mode, you will also notice that all logs are in JSON.
+this is intenional--this structured logging format enables us or our orchestrator
+to pass logs of to a logging aggregator such that logs can more easily be searched
+in the context of a larger system.
+
 to run the api, please see its [associated readme](./packages/api/readme.md)
 
 ### ui
