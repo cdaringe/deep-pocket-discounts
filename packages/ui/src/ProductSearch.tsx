@@ -33,14 +33,14 @@ export class ProductSearch extends React.Component<any, IProductSearch> {
     this.searchTextChange$
       .pipe(
         tap((evt: InputEvent) => {
-          const isEmittingAjax = !!evt.target!.value.trim()
+          const willEmitAjax = !!evt.target!.value.trim()
           this.setState({
             search: {
               ...this.state.search,
               ...{ dirty: true, text: evt.target!.value }
             },
             results: [],
-            loading: isEmittingAjax
+            loading: willEmitAjax
           })
         }),
         map(evt => evt.target!.value.trim()),
