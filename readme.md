@@ -8,6 +8,14 @@ a product keyword search suite.
 
 to learn more about the design of this project, see [design-discussion.md](./design-discussion.md).
 
+## usage
+
+you can use `deep-pocket-discounts` in three ways:
+
+1. visit [deep-pocket-discounts.cdaringe.com](https://deep-pocket-discounts.cdaringe.com)
+2. run a docker container, `docker run -it -p 9090:9090 cdaringe/dpd`, or,
+3. see the contributing docs for how to run locally.
+
 ## contributing
 
 see [contributing.md](./.github/contributing.md)
