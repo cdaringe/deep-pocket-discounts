@@ -29,7 +29,7 @@
   "scripts": {
     "bootstrap": "yarn && lerna bootstrap && lerna link --force-local",
     "build": "run-p compile:*",
-    "build:docker": "docker built . -t cdaringe/dpd",
+    "build:docker": "docker build . -t cdaringe/dpd",
     "commitmsg": "commitlint -E GIT_PARAMS",
     "compile:all": "node scripts/build.js compile:all",
     "lint-staged": "lint-staged",
