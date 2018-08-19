@@ -139,4 +139,4 @@ the ui is a small and simple design.
 
 when running the `ui`, it is by default configured to proxy all `api` requests to a locally running api instance.
 
-to run the ui, please see its [associated readme](./packages/ui/readme.md).
+to run the ui, please see its [associated readme](./packages/ui/readme.md)!
