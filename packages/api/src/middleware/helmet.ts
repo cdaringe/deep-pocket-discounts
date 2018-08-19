@@ -4,7 +4,12 @@ export function middleware () {
   const mw = helmet({
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"]
+        defaultSrc: [
+          "'self'",
+          '*.gstatic.com',
+          '*.googleapis.com',
+          '*.walmartimages.com'
+        ]
       }
     },
     referrerPolicy: { policy: 'no-referrer' }
