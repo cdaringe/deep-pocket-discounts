@@ -1,8 +1,8 @@
 import './ProductSearchResults.css'
-import * as React from 'react'
-import * as cx from 'classnames'
-import { ProductSearchResultsCard } from './ProductSearchResultCard'
 import { Loader } from 'semantic-ui-react'
+import { ProductSearchResultsCard } from './ProductSearchResultCard'
+import * as classnames from 'classnames'
+import * as React from 'react'
 
 interface IProductSearchResultsProps {
   default: boolean
@@ -29,7 +29,7 @@ export class ProductSearchResults extends React.PureComponent<
     }
     return (
       <div
-        className={cx(
+        className={classnames(
           'search__results',
           defaultView && 'search__results--default'
         )}

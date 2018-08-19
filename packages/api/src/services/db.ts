@@ -10,7 +10,7 @@ export async function service (
 ): Promise<Pocket.IDb> {
   const { services: { logger } } = opts
   const dbFilename = opts.config.services.db.filename
-  logger.debug(`upserting database directory: ${dbFilename}`)
+  logger.debug(`upserting database directory: ${path.dirname(dbFilename)}`)
   await fs.mkdirp(path.dirname(dbFilename))
   const db = bluebird.promisifyAll(toilet(dbFilename))
   await db.openAsync()

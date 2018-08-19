@@ -1,10 +1,10 @@
 import './ProductSearchResultCard.css'
-import * as React from 'react'
 import { Button, Card, Image, Label, Icon } from 'semantic-ui-react'
 import { Pocket } from 'typings/interfaces'
+import * as React from 'react'
 
 export function ProductSearchResultsCard (props: Pocket.Product) {
-  const msrp = props.msrp || props.salePrice || 0
+  const msrp = props.msrp || props.salePrice || 0 // hack. we'd never ship this :)
   const isOnSale = props.salePrice && props.salePrice < msrp
   const customerRatingText = props.customerRating
     ? ` ${parseFloat(props.customerRating).toFixed(1)}`
@@ -47,6 +47,7 @@ export function ProductSearchResultsCard (props: Pocket.Product) {
             {props.shortDescription.length < 200
               ? props.shortDescription
               : `${props.shortDescription.substr(0, 197).trim()}...`}
+            {/* ^ @TODO use css text overflow */}
           </p>
         }
         extra={

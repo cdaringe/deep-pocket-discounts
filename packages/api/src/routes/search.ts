@@ -21,7 +21,7 @@ interface ISearchInput {
  * in a larger environment, we would design in pagination features,
  * using an offset, page size, sorting, etc.
  */
-export function get (app: Koa, db: Pocket.IDb, apis: Pocket.IApisConfig) {
+export function get (db: Pocket.IDb, apis: Pocket.IApisConfig) {
   const debug = createDebug('dpd:route:search:get')
   debug('registering route')
 
@@ -45,7 +45,7 @@ export function get (app: Koa, db: Pocket.IDb, apis: Pocket.IApisConfig) {
       if (item.longDescription.match(matcher)) {
         stream.write(returnFullDocs ? item : item.itemId)
       }
-      await bluebird.delay(500) // rate-limit friendly
+      await bluebird.delay(500) // rate-limit, be friendly to the API
     })
     stream.end()
   }

@@ -1,12 +1,12 @@
-import * as React from 'react'
+import { ajax } from 'rxjs/ajax'
+import { debounceTime, tap, mergeMap, filter, map } from 'rxjs/operators'
 import { Input } from 'semantic-ui-react'
+import { ProductSearchControls } from './ProductSearchControls'
 import { ProductSearchResults } from './ProductSearchResults'
 import { Subject } from 'rxjs'
-import { debounceTime, tap, mergeMap, filter, map } from 'rxjs/operators'
-import { ajax } from 'rxjs/ajax'
-import { ProductSearchControls } from './ProductSearchControls'
+import * as React from 'react'
 
-interface IProductSearch {
+export interface IProductSearch {
   search: {
     dirty: boolean
     text: string
@@ -16,7 +16,7 @@ interface IProductSearch {
   results: any[]
 }
 
-type InputEvent = React.ChangeEvent<HTMLInputElement>
+export type InputEvent = React.ChangeEvent<HTMLInputElement>
 
 export class ProductSearch extends React.Component<any, IProductSearch> {
   private searchTextChange$: Subject<InputEvent>
@@ -30,6 +30,20 @@ export class ProductSearch extends React.Component<any, IProductSearch> {
     this.onSearchChange = this.onSearchChange.bind(this)
     this.onToggleLiveMode = this.onToggleLiveMode.bind(this)
     this.searchTextChange$ = new Subject()
+    this.subscribeToSearchChange()
+  }
+  async onSearchChange (evt: InputEvent) {
+    this.searchTextChange$.next(evt)
+  }
+  onToggleLiveMode () {
+    this.setState({
+      search: {
+        ...this.state.search,
+        liveMode: !this.state.search.liveMode
+      }
+    })
+  }
+  subscribeToSearchChange () {
     this.searchTextChange$
       .pipe(
         tap((evt: InputEvent) => {
@@ -63,18 +77,6 @@ export class ProductSearch extends React.Component<any, IProductSearch> {
         next: results => this.setState({ loading: false, results })
       })
   }
-  async onSearchChange (evt: InputEvent) {
-    this.searchTextChange$.next(evt)
-  }
-  onToggleLiveMode () {
-    this.setState({
-      search: {
-        ...this.state.search,
-        liveMode: !this.state.search.liveMode
-      }
-    })
-  }
-  async componentWillMount () {}
   render () {
     const { loading, results, search } = this.state
     return (

@@ -95,8 +95,8 @@ export class Service {
   async createFileServerApp () {
     const app = new Koa()
     const staticHandler = serve(PUBLIC_DIRNAME, { defer: false })
-    // serve linked static ui build
     if (common.isDev) {
+      // serve linked static ui build
       await fs.mkdirp(path.dirname(PUBLIC_DIRNAME))
       const uiBuildDir = path.resolve(__dirname, '../../ui/build')
       const isUiBuilt = await fs.pathExists(uiBuildDir)
@@ -110,6 +110,7 @@ export class Service {
     }
     app.use((ctx: Koa.Context, next: any) =>
       staticHandler(ctx, async () => {
+        // on 404, let the web-app handle rendering the route
         if (ctx.status === 404) {
           ctx.body = fs.createReadStream(`${PUBLIC_DIRNAME}/index.html`)
           ctx.type = 'html'
@@ -153,11 +154,10 @@ export class Service {
     const { app: api, services } = await this.createApiServerApp(config)
     const { app } = await this.createRootApp(config, services, api, fileserver)
     Object.assign(this, { config, services })
-    this.server = app.listen(port)
     if (!config.services.replicator.enabled) {
-      // kick-off replication side-effect
       services.replicator!.replicate({ db: services.db! })
     }
+    this.server = app.listen(port)
     services.logger.debug(`configuration: ${JSON.stringify(config, null, 2)}`)
     services.logger.info(`🚀  listening @ http://localhost:${port}`)
   }

@@ -1,5 +1,5 @@
 // @warning
-// this file _must_ be fully syncronous such that the test runner can execute
+// this file _must_ be fully synchronous such that the test runner can execute
 // it to completion before executing dependent tests. :(
 
 import { resolve } from 'path'

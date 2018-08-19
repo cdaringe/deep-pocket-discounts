@@ -4,7 +4,7 @@ import { Replicator } from './services/replicator'
 
 export namespace Pocket {
   export interface IApisConfig {
-    // we only have one api endpoint, items!
+    // we only have one api endpoint, /items!
     items: {
       url: string
       resource: (id: number) => string

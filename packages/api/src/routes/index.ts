@@ -10,8 +10,8 @@ export async function bind (
   router: Router,
   services: Pocket.IServices
 ) {
-  router.get('/hello', (ctx: Koa.Context) => 'world!')
+  router.get('/hello', () => 'world!')
   router.post('/login', login.post(app))
-  router.get('/search', search.get(app, services.db!, config.apis))
+  router.get('/search', search.get(services.db!, config.apis))
   app.use(router.routes()).use(router.allowedMethods())
 }

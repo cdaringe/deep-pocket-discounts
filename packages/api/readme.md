@@ -30,3 +30,8 @@
 | `REPLICATE_IDS`       | -                          | **Required**.  e.g. `1,2,3`                              |
 
 <small>psst, ^VSCode [text-tables](https://github.com/rpeshkov/vscode-text-tables) extension is awesome!</small>
+
+## contributing
+
+- tests can be found in `./src/test` - `yarn build && yarn test` to run the suite
+- formatting/style is defined in the root project -- stick to it!
