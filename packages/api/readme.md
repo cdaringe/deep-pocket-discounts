@@ -9,7 +9,7 @@
 
 | route         | method | query                                      | response                        | description                                                                                                                                                |
 | ------------- | ------ | ------------------------------------------ | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/api/search` | `GET`  | `keyword=<value>`, `live=true`, `doc=true` | `[list, of, ids]`, or documents | Search for items based on a keyword.  `live` mode uses the backing API for search.  By default, searches API caches. `doc` returns full docs, vs just IDs. |
+| `/api/search` | `GET`  | `keyword=<value>`, `live=true`, `doc=true` | `[list, of, ids]`, or documents | Search for items based on a keyword.  `live` mode uses the backing API for search.  By default, searches use API caches. `doc` returns full docs, vs just IDs. |
 | `/api/hello`  | `GET`  | -                                          | `'world'`                       |                                                                                                                                                            |
 
 
