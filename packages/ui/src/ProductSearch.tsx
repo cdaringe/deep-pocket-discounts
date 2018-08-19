@@ -53,7 +53,7 @@ export class ProductSearch extends React.Component<any, IProductSearch> {
               ...this.state.search,
               ...{ dirty: true, text: evt.target!.value }
             },
-            results: [],
+            results: willEmitAjax ? [] : this.state.results,
             loading: willEmitAjax
           })
         }),
