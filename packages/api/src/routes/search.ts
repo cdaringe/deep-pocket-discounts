@@ -59,6 +59,7 @@ export function get (app: Koa, db: Pocket.IDb, apis: Pocket.IApisConfig) {
     ctx.type = 'json'
     ctx.body = stream
     stream.on('error', ctx.onerror)
+    ctx.log.debug(`keyword: ${keyword}, liveMode: ${!!ctx.query.live}`)
     return ctx.query.live
       ? searchLive({ returnFullDocs, matcher, stream })
       : searchCached({ returnFullDocs, matcher, stream })

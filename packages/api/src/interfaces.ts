@@ -67,6 +67,7 @@ export namespace Pocket {
 // extend context to enable us to tack on our own props, which is idiomatic koa
 declare module 'koa' {
   export interface BaseContext {
+    log: pino.Logger
     services: Pocket.IServices
     state: {
       jwt: string

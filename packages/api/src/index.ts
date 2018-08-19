@@ -56,7 +56,7 @@ export class Service {
       },
       dataDirname,
       logger: {
-        level: process.env.LOG_LEVEL || common.isDev ? 'debug' : 'warn',
+        level: process.env.LOG_LEVEL || common.isDev ? 'debug' : 'info',
         name,
         prettyPrint: common.isDev ? true : !!process.env.PRETTY_REQUEST_LOGGING
       },
