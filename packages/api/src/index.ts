@@ -44,13 +44,10 @@ export class Service {
     const dataDirname =
       process.env.DATA_DIRNAME || path.resolve(homedir(), '.deep-pockets')
     const url = process.env.PRODUCT_API_URL
-    const resource = (id: number) =>
-      `/items/${id}?format=json&apiKey=${process.env.ITEM_API_KEY}`
     const defaults: Partial<Pocket.IServiceConfig> = {
       apis: {
         items: {
           url,
-          resource,
           permittedIds: itemIds
         }
       },
@@ -73,7 +70,6 @@ export class Service {
           enabled: !!process.env.ENABLE_REPLICATION,
           ids: itemIds,
           refresh: !!process.env.REFRESH_REPLICATION,
-          resource,
           url
         }
       }

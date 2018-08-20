@@ -7,7 +7,6 @@ export namespace Pocket {
     // we only have one api endpoint, /items!
     items: {
       url: string
-      resource: (id: number) => string
       permittedIds: number[]
     }
   }
@@ -59,7 +58,6 @@ export namespace Pocket {
     enabled?: boolean
     ids: number[]
     refresh: boolean
-    resource: (id: number) => string
     url: string
   }
 }

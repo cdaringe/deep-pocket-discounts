@@ -21,11 +21,10 @@ export class Replicator {
   public progress: { incomplete: number; complete: number }
   public state: States
   public url: string
-  public resource: (id: number) => string
 
   constructor (opts: Pocket.IReplicatorConfig & { logger: Pocket.Logger }) {
-    const { refresh, ids, logger, resource, url } = opts
-    Object.assign(this, { refresh, ids, logger, resource, url })
+    const { refresh, ids, logger, url } = opts
+    Object.assign(this, { refresh, ids, logger, url })
     this.state = States.Stopped
     this.progress = { incomplete: this.ids.length, complete: 0 }
   }
@@ -67,7 +66,8 @@ export class Replicator {
         return
       }
     }
-    const uri = `${this.url}${this.resource(id)}`
+    const queryString = `format=json&apiKey=${process.env.ITEM_API_KEY}`
+    const uri = `${this.url}/items/${id}?${queryString}`
     this.logger.info(`fetching id ${id}`)
     // replicate intentionally slow for visual demo effect
     await bluebird.delay(1000)

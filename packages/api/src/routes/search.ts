@@ -1,3 +1,4 @@
+import { chunk } from 'lodash'
 import { escapeRegExp } from 'lodash'
 import { Pocket } from '..'
 import * as bluebird from 'bluebird'
@@ -7,6 +8,8 @@ import * as JSONStream from 'streaming-json-stringify'
 import * as Koa from 'koa'
 import * as stream from 'stream'
 import fetch from 'node-fetch'
+
+const MAX_IDS_PER_SEARCH = 20
 
 interface ISearchInput {
   matcher: RegExp
@@ -39,12 +42,18 @@ export function get (db: Pocket.IDb, apis: Pocket.IApisConfig) {
 
   async function searchLive (opts: ISearchInput) {
     const { returnFullDocs, matcher, stream } = opts
-    await bluebird.each(apis.items.permittedIds, async id => {
-      const res = await fetch(`${apis.items.url}${apis.items.resource(id)}`)
-      const item = await res.json()
-      if (item.longDescription.match(matcher)) {
-        stream.write(returnFullDocs ? item : item.itemId)
-      }
+    const idChunks = chunk(apis.items.permittedIds, MAX_IDS_PER_SEARCH)
+    await bluebird.each(idChunks, async ids => {
+      const queryString = `ids=${ids.join(',')}&format=json&apiKey=${
+        process.env.ITEM_API_KEY
+      }`
+      const res = await fetch(`${apis.items.url}/items?${queryString}`)
+      const json = await res.json()
+      json.items.forEach((item: any) => {
+        if (item.longDescription.match(matcher)) {
+          stream.write(returnFullDocs ? item : item.itemId)
+        }
+      })
       await bluebird.delay(500) // rate-limit, be friendly to the API
     })
     stream.end()
