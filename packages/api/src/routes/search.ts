@@ -1,5 +1,4 @@
-import { chunk } from 'lodash'
-import { escapeRegExp } from 'lodash'
+import { chunk, escapeRegExp } from 'lodash'
 import { Pocket } from '..'
 import * as bluebird from 'bluebird'
 import * as createDebug from 'debug'
