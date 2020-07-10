@@ -21,7 +21,7 @@
     "koa-pino-logger": "^2.1.1",
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.2",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.16",
     "node-fetch": "^2.1.2",
     "perish": "^1.0.1",
     "promise-retry": "^1.1.1",
