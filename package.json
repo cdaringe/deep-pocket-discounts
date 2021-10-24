@@ -7,7 +7,7 @@
   "author": "cdaringe",
   "license": "MIT",
   "dependencies": {
-    "@commitlint/cli": "^7.0.0",
+    "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^7.0.1",
     "chalk": "^2.4.1",
     "eslint-plugin-typescript": "^0.12.0",
