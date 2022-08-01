@@ -22,7 +22,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.2",
     "lodash": "^4.17.4",
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^3.2.10",
     "perish": "^1.0.1",
     "promise-retry": "^1.1.1",
     "pino": "^4.10.4",
