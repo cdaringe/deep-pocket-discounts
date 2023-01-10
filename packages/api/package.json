@@ -17,17 +17,17 @@
     "koa-bodyparser": "^4.2.1",
     "koa-compress": "^3.0.0",
     "koa-helmet": "^4.0.0",
-    "koa-mount": "^3.0.0",
+    "koa-mount": "^4.0.0",
     "koa-pino-logger": "^2.1.1",
     "koa-router": "^7.4.0",
-    "koa-static": "^4.0.2",
+    "koa-static": "^5.0.0",
     "lodash": "^4.17.4",
     "node-fetch": "^2.1.2",
     "perish": "^1.0.1",
     "promise-retry": "^1.1.1",
     "pino": "^4.10.4",
     "streaming-json-stringify": "^3.1.0",
-    "toiletdb": "^1.4.1"
+    "toiletdb": "^2.0.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.23",
