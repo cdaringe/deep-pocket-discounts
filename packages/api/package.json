@@ -7,7 +7,7 @@
   "author": "cdaringe",
   "license": "MIT",
   "dependencies": {
-    "@koa/cors": "^2.2.2",
+    "@koa/cors": "^5.0.0",
     "bluebird": "^3.5.1",
     "common": "^0.0.1",
     "debug": "^3.1.0",
